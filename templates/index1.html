@@ -1,0 +1,95 @@
+ <!-- /* for pic.py showing both webcam and pic selection */ -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Emotion Detection AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
+
+</head>
+<body>
+
+<div class="container">
+
+    <div class="panel">
+        <h1>Real-Time Emotion Detection</h1>
+        <p class="lead">
+            Upload a face image and let the AI predict the facial emotion using a deep learning model.
+        </p>
+
+        <form class="form" method="POST" enctype="multipart/form-data">
+
+            <div class="file-wrap">
+                <label class="upload-btn">
+                    Choose Image
+                    <input type="file" name="image" id="imageInput" accept="image/*" required>
+                </label>
+                <span class="hint" id="fileName">No file selected</span>
+            </div>
+
+            <button type="submit">Predict Emotion</button>
+
+            <p class="hint">
+                Supported formats: JPG, PNG, JPEG. Best results with clear frontal faces.
+            </p>
+
+        </form>
+    </div>
+
+    <div class="preview-card">
+
+        {% if emotion %}
+            <div class="result-badge">
+                Predicted Emotion: <strong>{{ emotion }}</strong>
+            </div>
+        {% else %}
+            <div class="result-badge">
+                No prediction yet
+            </div>
+        {% endif %}
+
+        {% if user_image %}
+            <img src="{{ user_image }}" class="preview-img" id="previewImage">
+        {% else %}
+            <div class="preview-empty" id="previewEmpty">
+                Image preview will appear here
+            </div>
+            <img id="previewImage" class="preview-img" style="display:none;">
+        {% endif %}
+
+        {% if confidence %}
+            <div class="conf">
+                Confidence: {{ confidence }}%
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+<script>
+    const input = document.getElementById("imageInput");
+    const previewImg = document.getElementById("previewImage");
+    const previewEmpty = document.getElementById("previewEmpty");
+    const fileName = document.getElementById("fileName");
+
+    input.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            fileName.textContent = file.name;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImg.src = e.target.result;
+                previewImg.style.display = "block";
+                if (previewEmpty) previewEmpty.style.display = "none";
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+</body>
+</html>
+
