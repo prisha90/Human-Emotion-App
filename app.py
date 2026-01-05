@@ -7,7 +7,7 @@ import base64
 from tensorflow.keras.models import load_model
 
 app = Flask(__name__)
-model = load_model("models/emotion_mobilenet.h5")
+model = load_model("models/emotion_mobilenet_final.h5")
 
 labels = ['Angry','Disgust','Fear','Happy','Sad','Surprise','Neutral']
 
